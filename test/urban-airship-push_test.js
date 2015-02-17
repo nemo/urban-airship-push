@@ -8,6 +8,43 @@ var isConfigValid = function() {
     return !!testConfig.key && !!testConfig.secret && !!testConfig.masterSecret;
 };
 
+
+exports.testChannelsDeviceListing = function(test) {
+    if (!isConfigValid())
+        return console.error('Please provide a test configuration');
+    
+    test.expect(2);
+    
+    urbanAirshipPush.channels.device_listing(null, function(err, data) {
+        test.strictEqual(err, null);
+        test.ok(data.ok);
+
+        test.done();
+    });  
+};
+
+exports.testChannelsDeviceLookup = function(test) {
+    if (!isConfigValid())
+        return console.error('Please provide a test configuration');
+
+    test.expect(2);
+
+    urbanAirshipPush.channels.device_listing(null, function(err, data) {
+        var channels = data.channels;
+        if (!channels || (channels && channels.length == 0))
+            return console.error("Couldn't find a single channel to test device_lookup with.");
+
+        var channel_id = channels[0].channel_id;
+
+        urbanAirshipPush.channels.device_lookup(channel_id, function(err, data) {
+            test.strictEqual(err, null);
+            test.ok(data.ok);
+
+            test.done();
+        });
+    });
+};
+
 exports.testPushValidate = function (test) {
     if (!isConfigValid()) {
         console.error('Please provide a test configuration');
