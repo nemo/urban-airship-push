@@ -34,5 +34,11 @@
     "grunt-contrib-watch": "~0.5.3",
     "grunt": "~0.4.1"
   },
-  "keywords": ["urban airship", "push notification"]
+  "keywords": [
+    "urban airship",
+    "push notification"
+  ],
+  "dependencies": {
+    "url": "^0.10.2"
+  }
 }
